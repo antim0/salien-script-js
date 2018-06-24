@@ -132,9 +132,9 @@ class SalienScriptRestart {
 
 class SalienScript {
   constructor({ token, clan, name = null }) {
-    this.token = token;
-    this.clan = clan;
-    this.name = name;
+    this.token = process.env.token;
+    this.clan = process.env.clan;
+    this.name = process.env.name;
 
     this.maxRetries = 3;
     this.defaultDelayMs = 5000;

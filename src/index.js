@@ -131,7 +131,7 @@ class SalienScriptRestart {
 }
 
 class SalienScript {
-  constructor({ token, clan, name = null }) {
+  constructor({  }) {
     this.token = process.env.token;
     this.clan = process.env.clan;
     this.name = process.env.name;

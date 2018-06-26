@@ -66,6 +66,16 @@ If you'd like to team up with an established larger group please consider using 
 * [100Pals](https://steamcommunity.com/groups/100pals) id: `103582791454524084`
 * [SteamDB](https://steamcommunity.com/groups/steamdb) id: `103582791434298690`
 
+### 🌌 Select a planet (Optional)
+
+If you would like to override planet selection in favor of a particular one, provide the `--planet` CLI option with the planet ID.
+
+```sh-session
+salien-script-js --token xxxxxxxx --planet 15
+```
+
+---
+
 ### 👥 Multiple tokens/scripts
 
 Simply open another PowerShell window and run `salien-script-js --token yyyyyyyy --name "name of this script"` where `yyyyyyyy` is your other accounts token and `name of this script` if what you'd like to see in the log outputs.
@@ -104,12 +114,63 @@ You can also set up continuous deployment through Docker Hub. [Read the followin
 
 ## Advanced: ☁️ Deploying to heroku
 
+### Deploying with web-console
+
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
 1. Click the button above.
-2. Set SALIEN_CONFIG ("token1:group1:name1;token2:group2:name2...").
-![Heroku-Config](https://i.imgur.com/07KcyVC.png)
-3. All done. For now, there is no way to update script easily without re-creating heroku app or manually pulling upstream changes into heroku repo.
+2. Set SALIEN_CONFIG_V2 (see note below).
+3. That's all!
+
+### Deploying with Heroku CLI
+
+```bash
+$ git clone https://github.com/South-Paw/salien-script-js -o upstream
+$ cd salien-script-js
+$ heroku create [APP_NAME]
+$ heroku config:set "SALIEN_CONFIG_V2=[APP_CONFIG]"
+$ git push heroku master
+$ heroku ps:scale web=0 salien=1
+```
+
+### Heroku configuration
+
+`SALIEN_CONFIG_V2` is just an array of config that will be passed to `SalienScript` constructor.
+
+For example:
+
+```JSON
+[
+    {
+        "token": "token1",
+        "clan": "clan1",
+        "name": "name1"
+    },
+    {
+        "token": "token2",
+        "clan": "clan2",
+        "name": "name2"
+    }
+]
+```
+
+### Updating
+
+If you created your app using web-console, you need to clone heroku repo first
+
+```bash
+$ git clone https://git.heroku.com/[APP_NAME].git -o heroku
+$ cd [APP_NAME]
+$ git remote add upstream https://github.com/South-Paw/salien-script-js.git
+```
+
+And then, fetch, merge and push
+
+```bash
+$ git fetch upstream
+$ git merge remotes/upstream/master
+$ git push heroku master
+```
 
 ---
 
